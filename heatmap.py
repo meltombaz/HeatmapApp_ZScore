@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Molecule Heatmap", layout="centered")
 
 # Title
-st.title("Heatmap Maker")
+st.title("你是不是忘了还我五欧？")
 
 # File upload
 uploaded_file = st.file_uploader("Upload your Excel file (.xlsx)", type=["xlsx"])
@@ -21,28 +21,30 @@ if uploaded_file is not None:
         else:
             # Reshape for seaborn
             data_long = pd.melt(df, id_vars='Molecule', var_name='Condition', value_name='Average Delta Z-Score')
-            # Preserve original Gene order
+            
+            # Preserve original row (Molecule) order
             gene_order = df['Molecule'].tolist()
+            
+            # Pivot and preserve column order
             heatmap_data = data_long.pivot(index='Molecule', columns='Condition', values='Average Delta Z-Score')
-            heatmap_data = heatmap_data.reindex(gene_order)
+            heatmap_data = heatmap_data.reindex(gene_order)  # Preserve row order
+            original_col_order = [col for col in df.columns if col != 'Molecule']
+            heatmap_data = heatmap_data[original_col_order]  # Preserve column order
 
-
-            # Plot
             # User input for title
             custom_title = st.text_input("Enter a title for your heatmap:", value="Average Δ Z-Score Heatmap")
 
             # Plot
             plt.figure(figsize=(6, max(6, len(heatmap_data) * 0.25)))  # Dynamic height
             ax = sns.heatmap(
-            heatmap_data,
-            annot=heatmap_data.round(2),
-            fmt='',
-            cmap=sns.diverging_palette(240, 10, as_cmap=True),
-            center=0,
-            linewidths=0.5,
-            cbar_kws={'label': 'Average ΔZ-Score'}  # or 'Average \u0394 Z-Score'
+                heatmap_data,
+                annot=heatmap_data.round(2),
+                fmt='',
+                cmap=sns.diverging_palette(240, 10, as_cmap=True),
+                center=0,
+                linewidths=0.5,
+                cbar_kws={'label': 'Average ΔZ-Score'}
             )
-            
 
             plt.title(custom_title, fontsize=14, fontweight='bold')
             plt.xticks(fontsize=10, fontfamily='sans-serif')
