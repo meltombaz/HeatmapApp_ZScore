@@ -40,9 +40,8 @@ if uploaded_file is not None:
             cmap=sns.diverging_palette(240, 10, as_cmap=True),
             center=0,
             linewidths=0.5,
-            cbar_kws={'label': 'Average Δ Z-Score'}  # or 'Average \u0394 Z-Score'
+            cbar_kws={'label': 'Average ΔZ-Score'}  # or 'Average \u0394 Z-Score'
             )
-
             
 
             plt.title(custom_title, fontsize=14, fontweight='bold')
