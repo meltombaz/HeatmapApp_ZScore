@@ -1,0 +1,51 @@
+import streamlit as st
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Page setup
+st.set_page_config(page_title="Gene Expression Heatmap", layout="centered")
+
+# Title
+st.title("🔬 Gene Expression Heatmap Viewer")
+
+# File upload
+uploaded_file = st.file_uploader("Upload your Excel file (.xlsx)", type=["xlsx"])
+
+if uploaded_file is not None:
+    try:
+        df = pd.read_excel(uploaded_file)
+
+        if df.shape[1] < 2 or 'Gene' not in df.columns:
+            st.error("The file must have a 'Gene' column and at least one numeric condition column.")
+        else:
+            # Reshape for seaborn
+            data_long = pd.melt(df, id_vars='Gene', var_name='Condition', value_name='Expression')
+            heatmap_data = data_long.pivot(index='Gene', columns='Condition', values='Expression')
+
+            # Plot
+            plt.figure(figsize=(6, max(6, len(heatmap_data) * 0.25)))  # Dynamic height
+            ax = sns.heatmap(
+                heatmap_data,
+                annot=heatmap_data.round(2),
+                fmt='',
+                cmap=sns.diverging_palette(240, 10, as_cmap=True),
+                center=0,
+                linewidths=0.5,
+                cbar_kws={'label': 'Expression'}
+            )
+
+            plt.title("Zhuo Heatmap", fontsize=14, fontweight='bold')
+            plt.xticks(fontsize=10, fontfamily='sans-serif')
+            plt.yticks(fontsize=10, fontfamily='sans-serif', rotation=0)
+            plt.xlabel("Condition", fontsize=12, fontweight='bold', fontfamily='sans-serif')
+            plt.ylabel("Gene", fontsize=12, fontweight='bold', fontfamily='sans-serif')
+            plt.tight_layout()
+
+            st.pyplot(plt)
+            st.success("✅ Heatmap generated successfully!")
+
+    except Exception as e:
+        st.error(f"❌ Error processing file: {e}")
+else:
+    st.info("Please upload an Excel file with gene expression data.")
