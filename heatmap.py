@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Molecule Heatmap", layout="centered")
 
 # Title
-st.title("你是不是忘了还我五欧？")
+st.title("别忘了给我做生日面")
 
 # File upload
 uploaded_file = st.file_uploader("Upload your Excel file (.xlsx)", type=["xlsx"])
@@ -56,6 +56,18 @@ if uploaded_file is not None:
             st.pyplot(plt)
 
             st.success("✅ Heatmap generated successfully!")
+
+            # Show image at the bottom of the page
+            st.markdown(
+                """
+                <div style="text-align: center; margin-top: 50px;">
+                    <img src="https://i0.wp.com/msshiandmrhe.com/wp-content/uploads/2022/12/WeChat-Image_20221220155529.jpg?resize=800%2C840&ssl=1" 
+                        alt="Birthday noodles" width="300" style="border-radius: 10px;">
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
 
     except Exception as e:
         st.error(f"❌ Error processing file: {e}")
