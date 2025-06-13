@@ -29,7 +29,7 @@ if uploaded_file is not None:
 
             # Plot
             # User input for title
-            custom_title = st.text_input("Enter a title for your heatmap:", value="Zhuo Heatmap")
+            custom_title = st.text_input("Enter a title for your heatmap:", value="Average Δ Z-Score Heatmap")
 
             # Plot
             plt.figure(figsize=(6, max(6, len(heatmap_data) * 0.25)))  # Dynamic height
@@ -40,12 +40,16 @@ if uploaded_file is not None:
             cmap=sns.diverging_palette(240, 10, as_cmap=True),
             center=0,
             linewidths=0.5,
-            cbar_kws={'label': 'Average Delta Z-Score'}
+            cbar_kws={'label': 'Average Δ Z-Score'}  # or 'Average \u0394 Z-Score'
             )
+
+            
 
             plt.title(custom_title, fontsize=14, fontweight='bold')
             plt.xticks(fontsize=10, fontfamily='sans-serif')
             plt.yticks(fontsize=10, fontfamily='sans-serif', rotation=0)
+            plt.xlabel("", fontsize=12, fontweight='bold', fontfamily='sans-serif')
+            plt.ylabel("", fontsize=12, fontweight='bold', fontfamily='sans-serif')
             plt.tight_layout()
 
             st.pyplot(plt)
