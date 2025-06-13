@@ -24,18 +24,22 @@ if uploaded_file is not None:
             heatmap_data = data_long.pivot(index='Gene', columns='Condition', values='Expression')
 
             # Plot
+            # User input for title
+            custom_title = st.text_input("Enter a title for your heatmap:", value="Zhuo Heatmap")
+
+            # Plot
             plt.figure(figsize=(6, max(6, len(heatmap_data) * 0.25)))  # Dynamic height
             ax = sns.heatmap(
-                heatmap_data,
-                annot=heatmap_data.round(2),
-                fmt='',
-                cmap=sns.diverging_palette(240, 10, as_cmap=True),
-                center=0,
-                linewidths=0.5,
-                cbar_kws={'label': 'Expression'}
+            heatmap_data,
+            annot=heatmap_data.round(2),
+            fmt='',
+            cmap=sns.diverging_palette(240, 10, as_cmap=True),
+            center=0,
+            linewidths=0.5,
+            cbar_kws={'label': 'Expression'}
             )
 
-            plt.title("Zhuo Heatmap", fontsize=14, fontweight='bold')
+            plt.title(custom_title, fontsize=14, fontweight='bold')
             plt.xticks(fontsize=10, fontfamily='sans-serif')
             plt.yticks(fontsize=10, fontfamily='sans-serif', rotation=0)
             plt.xlabel("Condition", fontsize=12, fontweight='bold', fontfamily='sans-serif')
@@ -43,6 +47,7 @@ if uploaded_file is not None:
             plt.tight_layout()
 
             st.pyplot(plt)
+
             st.success("✅ Heatmap generated successfully!")
 
     except Exception as e:
