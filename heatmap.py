@@ -46,8 +46,6 @@ if uploaded_file is not None:
             plt.title(custom_title, fontsize=14, fontweight='bold')
             plt.xticks(fontsize=10, fontfamily='sans-serif')
             plt.yticks(fontsize=10, fontfamily='sans-serif', rotation=0)
-            plt.xlabel("", fontsize=12, fontweight='bold', fontfamily='sans-serif')
-            plt.ylabel("", fontsize=12, fontweight='bold', fontfamily='sans-serif')
             plt.tight_layout()
 
             st.pyplot(plt)
