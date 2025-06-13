@@ -21,7 +21,11 @@ if uploaded_file is not None:
         else:
             # Reshape for seaborn
             data_long = pd.melt(df, id_vars='Gene', var_name='Condition', value_name='Expression')
+            # Preserve original Gene order
+            gene_order = df['Gene'].tolist()
             heatmap_data = data_long.pivot(index='Gene', columns='Condition', values='Expression')
+            heatmap_data = heatmap_data.reindex(gene_order)
+
 
             # Plot
             # User input for title
