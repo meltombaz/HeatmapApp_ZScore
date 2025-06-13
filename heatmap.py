@@ -17,13 +17,13 @@ if uploaded_file is not None:
         df = pd.read_excel(uploaded_file)
 
         if df.shape[1] < 2 or 'Molecule' not in df.columns:
-            st.error("The file must have a 'Gene' column and at least one numeric condition column.")
+            st.error("The file must have a 'Molecule' column and at least one numeric condition column.")
         else:
             # Reshape for seaborn
-            data_long = pd.melt(df, id_vars='Protein', var_name='Condition', value_name='Average Delta Z-Score')
+            data_long = pd.melt(df, id_vars='Molecule', var_name='Condition', value_name='Average Delta Z-Score')
             # Preserve original Gene order
-            gene_order = df['Protein'].tolist()
-            heatmap_data = data_long.pivot(index='Protein', columns='Condition', values='Average Delta Z-Score')
+            gene_order = df['Molecule'].tolist()
+            heatmap_data = data_long.pivot(index='Molecule', columns='Condition', values='Average Delta Z-Score')
             heatmap_data = heatmap_data.reindex(gene_order)
 
 
